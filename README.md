@@ -4,10 +4,15 @@
 #Uncomment line above & run cell to save solution
 #TODO Define class that implements accountInterface & allows for the management of an account
 
-def account:
+class account:
+    
     def __init__(self, positions, accountName):
         self.accountName = accountName
         self._set = set(positions)
+        securityName_to_position = {}
+        for position in positions:
+            securityName_to_position[position.getSecurity().getName()] = position
+        self.securityName_to_position = securityName_to_position
         
     def getName(self):
         return self.accountName
@@ -16,9 +21,19 @@ def account:
         return self._set
     
     def getPositions(self, securities):
-        for i in securities:
-            if isinstance(i, (str)):
-                if i.getPosition() in self._set:
+        position_dict = {}
+        for security in securities:
+            if isinstance(security, (str)):
+                
+                if security in self.securityName_to_position:
+                    position_dict[security] = self.securityName_to_position[security]
+            else:
+                if security.getName() in self.securityName_to_position:
+                    position_dict[security] = self.securityName_to_position[security]
+        print(self.securityName_to_position)
+        print(position_dict)
+        return position_dict
+                    
                     
   
   %%writefile ../implementations/positionSolution.py 
